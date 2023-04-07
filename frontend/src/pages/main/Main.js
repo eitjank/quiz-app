@@ -1,10 +1,9 @@
 import React from 'react';
-import {Link} from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
-import Profile from "../../components/profile/Profile";
 import {useAuth0} from '@auth0/auth0-react';
 import './Main.css';
 import LoginButton from "../../components/LoginButton";
+import QuizList from "../../components/QuizList";
 
 function Main() {
     const {isAuthenticated} = useAuth0();
@@ -16,13 +15,8 @@ function Main() {
             {isAuthenticated ? (
                 <div className="user-info-container">
                     <LogoutButton/>
-                    <Profile/>
                     <p className="main-message">Welcome to the main page!</p>
-                    <ul className="quiz-list">
-                        <li>
-                            <Link to="/quiz" className="quiz-link">Quiz 1</Link>
-                        </li>
-                    </ul>
+                    <QuizList/>
                 </div>
             ) : (
                 <LoginButton/>
