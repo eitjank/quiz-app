@@ -1,6 +1,5 @@
 package lt.quiz.backend.quiz.question;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,6 @@ public class Question {
     private Quiz quiz;
     @Column(nullable = false)
     private String text;
-    @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> options;
     @Column(nullable = false)
