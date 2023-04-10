@@ -15,7 +15,7 @@ function QuizList() {
             <ul>
                 {quizzes.map((quiz) => (
                     <li key={quiz.id}>
-                        <Link to={`/quizzes/${quiz.id}`}>{quiz.name}</Link>
+                        <Link to={`/quizzes/${quiz.id}`}>{quiz.title}</Link>
                     </li>
                 ))}
             </ul>

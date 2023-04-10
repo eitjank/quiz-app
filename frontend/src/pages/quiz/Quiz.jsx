@@ -4,7 +4,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 
 function Quiz() {
-    const [quiz, setQuiz] = useState(null);
+    const [quizTitle, setQuizTitle] = useState(null);
     const {id} = useParams();
     const [questions, setQuestions] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -13,10 +13,10 @@ function Quiz() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/questions/quiz/${id}`)
+        axios.get(`http://localhost:8080/api/quizzes/${id}`)
             .then(response => {
-                setQuiz(response.data[0].quiz);
-                setQuestions(response.data);
+                setQuizTitle(response.data.title);
+                setQuestions(response.data.questions);
             })
             .catch((error) => console.log(error));
     }, [id]);
@@ -45,7 +45,7 @@ function Quiz() {
 
     return (
         <div>
-            <h2>{quiz && quiz.name}</h2>
+            <h2>{quizTitle && quizTitle}</h2>
             <button className="back-button" onClick={handleBackButtonClick}>Back To Main Page</button>
             {showScore ? (
                 <div className="score-section">
