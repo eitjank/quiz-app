@@ -17,12 +17,12 @@ public class QuestionController {
 
     @GetMapping
     public List<Question> getAllQuestions() {
-        return questionService.getAllQuestionzes();
+        return questionService.getAllQuestions();
     }
 
     @GetMapping("/quiz/{quizId}")
-    public List<Question> getQuestionByQuizId(@PathVariable Long quizId) {
-        return questionService.getQuestionByQuizId(quizId);
+    public List<Question> getQuestionsByQuizId(@PathVariable Long quizId) {
+        return questionService.getQuestionsByQuizId(quizId);
     }
 
     @GetMapping("/{questionId}")

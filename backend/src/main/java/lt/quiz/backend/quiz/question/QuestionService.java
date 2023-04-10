@@ -14,7 +14,7 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public List<Question> getAllQuestionzes() {
+    public List<Question> getAllQuestions() {
         return questionRepository.findAll();
     }
 
@@ -36,7 +36,7 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
     }
 
-    public List<Question> getQuestionByQuizId(Long quizId) {
+    public List<Question> getQuestionsByQuizId(Long quizId) {
         return questionRepository.findByQuizId(quizId);
     }
 }

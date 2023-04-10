@@ -28,7 +28,7 @@ public class QuizService {
 
     public Quiz updateQuiz(Long quizId, Quiz quiz) {
         Quiz existingQuiz = quizRepository.findById(quizId).orElseThrow(() -> new NotFoundException("Quiz not found"));
-        existingQuiz.setName(quiz.getName());
+        existingQuiz.setTitle(quiz.getTitle());
         existingQuiz.setQuestions(quiz.getQuestions());
         return quizRepository.save(existingQuiz);
     }
