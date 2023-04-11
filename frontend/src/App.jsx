@@ -17,6 +17,7 @@ function App() {
                 <Route path="/profile" element={<AuthenticationGuard component={Profile}/> }/>
                 <Route path="/quiz-form" element={<AuthenticationGuard component={QuizForm}/> }/>
                 <Route path="/quiz-management" element={<AuthenticationGuard component={QuizManagement}/> }/>
+                <Route path="/quiz-management/quiz/:id" element={<AuthenticationGuard component={QuizForm}/> }/>
             </Routes>
         </Router>
     );

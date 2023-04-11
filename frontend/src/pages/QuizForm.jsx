@@ -1,19 +1,28 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const QuizForm = () => {
     const navigate = useNavigate();
-    const [quizData, setQuizData] = useState({
-        title: "",
-        questions: [
-            {
-                text: "",
-                options: [],
-                answerIndex: null,
-            },
-        ],
-    });
+    const location = useLocation();
+    const initialQuizData = location.state && location.state.quizData;
+    const [quizData, setQuizData] = useState(
+        {
+            title: "",
+            questions: [
+                {
+                    text: "",
+                    options: [],
+                    answerIndex: null,
+                },
+            ],
+        }
+    );
+
+    useEffect(() => {
+        if (initialQuizData)
+            setQuizData(initialQuizData);
+    }, [initialQuizData]);
 
     const handleTitleInputChange = (event) => {
         const {value} = event.target;
@@ -36,7 +45,7 @@ const QuizForm = () => {
         const {value} = event.target;
         setQuizData((prevQuizData) => {
             const updatedQuestions = [...prevQuizData.questions];
-            updatedQuestions[questionIndex].options[optionIndex] = value;
+            updatedQuestions[questionIndex].options[optionIndex].value = value;
 
             return {...prevQuizData, questions: updatedQuestions};
         });
@@ -65,7 +74,7 @@ const QuizForm = () => {
     const handleAddOption = (index) => {
         setQuizData((prevQuizData) => {
             const updatedQuestions = [...prevQuizData.questions];
-            updatedQuestions[index].options.push("");
+            updatedQuestions[index].options.push({value: ""});
             return {...prevQuizData, questions: updatedQuestions};
         });
     };
@@ -88,17 +97,8 @@ const QuizForm = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const {title, questions: quizQuestions} = quizData;
-        const data = {
-            title,
-            questions: quizQuestions.map(({text, options, answerIndex}) => ({
-                text,
-                options: options.map(val => ({value: val})),
-                answerIndex
-            })),
-        };
         // Send data to backend for quiz creation
-        axios.post("http://localhost:8080/api/quizzes", data)
+        axios.post("http://localhost:8080/api/quizzes", quizData)
             .then((response) => {
                 console.log("Response:", response);
             })
@@ -110,7 +110,7 @@ const QuizForm = () => {
 
     return (
         <div>
-            <h2>Create Quiz</h2>
+            <h2>{initialQuizData ? "Edit Quiz" : "Create Quiz"}</h2>
             <form>
                 <label>
                     Title:
@@ -123,7 +123,7 @@ const QuizForm = () => {
                 </label>
                 <h3>Questions:</h3>
                 {quizData.questions.map((question, questionIndex) => (
-                    <div key={questionIndex}>
+                    <div key={questionIndex} style={{ marginBottom: "3rem" }}>
                         <label>
                             Question {questionIndex + 1}:
                             <input
@@ -140,7 +140,7 @@ const QuizForm = () => {
                                 <input
                                     type="text"
                                     name="options"
-                                    value={option}
+                                    value={option.value}
                                     onChange={(event) => handleOptionInputChange(event, questionIndex, optionIndex)}
                                 />
                                 <button
@@ -182,7 +182,7 @@ const QuizForm = () => {
                     Add Question
                 </button>
                 <button type="submit" onClick={handleSubmit}>
-                    Create Quiz
+                    {initialQuizData ? "Save Quiz" : "Create Quiz"}
                 </button>
             </form>
         </div>
