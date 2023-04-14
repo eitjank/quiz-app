@@ -7,7 +7,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/questions-options")
-@CrossOrigin(origins = "http://localhost:3000")
 public class OptionController {
 
     private final OptionService optionService;

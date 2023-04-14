@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import "./Quiz.css";
 import {useNavigate, useParams} from "react-router-dom";
-import axios from "axios";
+import {useAuth0} from "@auth0/auth0-react";
+import callApi from "../../api/callApi";
 
 function Quiz() {
     const [quizTitle, setQuizTitle] = useState(null);
@@ -11,16 +12,22 @@ function Quiz() {
     const [score, setScore] = useState(0);
     const [showScore, setShowScore] = useState(false);
     const navigate = useNavigate();
+    const {getAccessTokenSilently} = useAuth0();
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/api/quizzes/${id}`)
-            .then(response => {
-                setQuizTitle(response.data.title);
-                setQuestions(response.data.questions);
-            })
-            .catch((error) => console.log(error));
-    }, [id]);
-
+        const fetchData = async () => {
+            const token = await getAccessTokenSilently();
+            const {data, error} = await callApi(`/api/quizzes/${id}`, token);
+            if (data) {
+                setQuizTitle(data.title);
+                setQuestions(data.questions);
+            }
+            if (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [getAccessTokenSilently, id]);
 
     if (!questions || questions.length === 0) { // Check if questions are loaded
         return <div>Loading quiz...</div>;

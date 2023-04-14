@@ -12,7 +12,8 @@ root.render(
             domain="dev-fini8sbnkbc5c5tb.eu.auth0.com"
             clientId="8Y8IhsbpocTVTJa81ZwTVQARh3gaRfex"
             authorizationParams={{
-                redirect_uri: window.location.origin
+                redirect_uri: window.location.origin,
+                audience: "https://quiz-app.com/api"
             }}
         >
             <App/>

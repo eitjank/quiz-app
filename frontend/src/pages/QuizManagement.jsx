@@ -1,25 +1,38 @@
 import React, {useState, useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
 import {Button} from "@mui/material";
+import {useAuth0} from "@auth0/auth0-react";
+import callApi from "../api/callApi";
 
 const QuizManagement = () => {
     const [quizzes, setQuizzes] = useState([]);
     const navigate = useNavigate();
+    const {getAccessTokenSilently} = useAuth0();
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/quizzes').then(response => setQuizzes(response.data));
-    }, []);
+        const fetchData = async () => {
+            const token = await getAccessTokenSilently();
+            const {data, error} = await callApi(`/api/quizzes`, token);
+            if (data) {
+                setQuizzes(data);
+            }
+            if (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, [getAccessTokenSilently]);
 
     const handleDeleteQuiz = async (quizId) => {
-        axios.delete(`http://localhost:8080/api/quizzes/${quizId}`).then(() => {
-            setQuizzes((prevQuizzes) => prevQuizzes.filter((quiz) => quiz.id !== quizId));
-        }).catch((error) => console.log(error));
-
+        const token = await getAccessTokenSilently();
+        const {error} = await callApi(`/api/quizzes/${quizId}`, token, "DELETE");
+        if (error) {
+            console.error('Error fetching data:', error);
+        }
     };
 
-    function handleEditQuiz(id) {
-        navigate(`/quiz-management/quiz/${id}`, {state: {quizData: quizzes.find(q => q.id === id)}});
+    const handleEditQuiz = async (quizId) => {
+        navigate(`/quiz-management/quiz/${quizId}`, {state: {quizData: quizzes.find(q => q.id === quizId)}});
     }
 
     return (

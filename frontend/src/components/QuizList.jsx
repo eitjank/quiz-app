@@ -1,13 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
+import {useAuth0} from "@auth0/auth0-react";
+import callApi from "../api/callApi";
 
 function QuizList() {
     const [quizzes, setQuizzes] = useState([]);
+    const {getAccessTokenSilently} = useAuth0();
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/quizzes').then(response=>setQuizzes(response.data));
-    }, []);
+        async function fetchData() {
+            try {
+                const token = await getAccessTokenSilently();
+                const {data, error} = await callApi('/api/quizzes', token);
+                if (data) {
+                    setQuizzes(data);
+                }
+                if (error) {
+                    console.error('Error fetching data:', error);
+                }
+            } catch (e) {
+                console.log(e.message);
+            }
+        }
+        fetchData();
+    }, [getAccessTokenSilently]);
 
     return (
         <div>

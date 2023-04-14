@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
+import callApi from "../api/callApi";
+import {useAuth0} from "@auth0/auth0-react";
 
 const QuizForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const initialQuizData = location.state && location.state.quizData;
+    const {getAccessTokenSilently} = useAuth0();
     const [quizData, setQuizData] = useState(
         {
             title: "",
@@ -95,16 +97,14 @@ const QuizForm = () => {
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Send data to backend for quiz creation
-        axios.post("http://localhost:8080/api/quizzes", quizData)
-            .then((response) => {
-                console.log("Response:", response);
-            })
-            .catch((error) => {
-                console.log("Error:", error);
-            });
+        const token = await getAccessTokenSilently();
+        const {error} = await callApi(`/api/quizzes`, token,"POST", quizData);
+        if (error) {
+            console.log(error);
+            return;
+        }
         navigate("/quiz-management");
     };
 
