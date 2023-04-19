@@ -100,7 +100,9 @@ const QuizForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const token = await getAccessTokenSilently();
-        const {error} = await callApi(`/api/quizzes`, token,"POST", quizData);
+        const apiURL = initialQuizData ? `/api/quizzes/${initialQuizData.id}` : "/api/quizzes";
+        const method = initialQuizData ? "PUT" : "POST";
+        const {error} = await callApi(apiURL, token, method, quizData);
         if (error) {
             console.log(error);
             return;
@@ -123,7 +125,7 @@ const QuizForm = () => {
                 </label>
                 <h3>Questions:</h3>
                 {quizData.questions.map((question, questionIndex) => (
-                    <div key={questionIndex} style={{ marginBottom: "3rem" }}>
+                    <div key={questionIndex} style={{marginBottom: "3rem"}}>
                         <label>
                             Question {questionIndex + 1}:
                             <input

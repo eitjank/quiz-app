@@ -53,9 +53,9 @@ function Quiz() {
     return (
         <div>
             <h2>{quizTitle && quizTitle}</h2>
-            <button className="back-button" onClick={handleBackButtonClick}>Back To Main Page</button>
             {showScore ? (
                 <div className="score-section">
+                    <button className="back-button" onClick={handleBackButtonClick}>Back To Main Page</button>
                     <h2>You scored {score} out of {questions.length}</h2>
                 </div>
             ) : (

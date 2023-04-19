@@ -1,6 +1,6 @@
 package lt.quiz.backend.quiz.question.option;
 
-import lt.quiz.backend.NotFoundException;
+import lt.quiz.backend.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

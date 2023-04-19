@@ -1,4 +1,4 @@
-package lt.quiz.backend;
+package lt.quiz.backend.exception;
 
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.http.HttpStatus;

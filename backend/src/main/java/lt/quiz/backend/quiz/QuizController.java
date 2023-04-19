@@ -1,5 +1,7 @@
 package lt.quiz.backend.quiz;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,17 +27,17 @@ public class QuizController {
     }
 
     @PostMapping
-    public Quiz createQuiz(@RequestBody Quiz quiz) {
-        return quizService.createQuiz(quiz);
+    public Quiz createQuiz(@RequestBody Quiz quiz, @AuthenticationPrincipal Jwt jwt) {
+        return quizService.createQuiz(quiz, jwt);
     }
 
     @PutMapping("/{quizId}")
-    public Quiz updateQuiz(@PathVariable Long quizId, @RequestBody Quiz quiz) {
-        return quizService.updateQuiz(quizId, quiz);
+    public Quiz updateQuiz(@PathVariable Long quizId, @RequestBody Quiz quiz, @AuthenticationPrincipal Jwt jwt) {
+        return quizService.updateQuiz(quizId, quiz, jwt);
     }
 
     @DeleteMapping("/{quizId}")
-    public void deleteQuiz(@PathVariable Long quizId) {
-        quizService.deleteQuiz(quizId);
+    public void deleteQuiz(@PathVariable Long quizId, @AuthenticationPrincipal Jwt jwt) {
+        quizService.deleteQuiz(quizId, jwt);
     }
 }
