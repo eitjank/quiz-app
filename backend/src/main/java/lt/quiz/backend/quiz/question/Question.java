@@ -3,6 +3,7 @@ package lt.quiz.backend.quiz.question;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,11 +26,14 @@ public class Question {
     @ManyToOne
     private Quiz quiz;
     @Column(nullable = false)
+    @NotNull
     private String text;
     @JsonManagedReference
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull
     private List<Option> options;
     @Column(nullable = false)
+    @NotNull
     private int answerIndex;
     private String explanation;
 

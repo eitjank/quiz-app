@@ -11,6 +11,7 @@ function QuizList() {
         async function fetchData() {
             try {
                 const token = await getAccessTokenSilently();
+                // console.log(token);
                 const {data, error} = await callApi('/api/quizzes', token);
                 if (data) {
                     setQuizzes(data);
