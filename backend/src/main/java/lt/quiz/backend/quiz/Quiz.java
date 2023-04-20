@@ -3,6 +3,7 @@ package lt.quiz.backend.quiz;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Quiz {
     private Long id;
     @Column(nullable = false)
     @NotNull
+    @Size(min = 1, max = 50)
     private String title;
     private String userId;
     @JsonManagedReference
