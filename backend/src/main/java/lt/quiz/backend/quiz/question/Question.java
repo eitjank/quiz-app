@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,7 @@ public class Question {
     private Quiz quiz;
     @Column(nullable = false)
     @NotNull
+    @Size(min = 2, max = 100)
     private String text;
     @JsonManagedReference
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
